@@ -6,6 +6,12 @@ namespace ShootingDice
 
     // A Player that throws an exception when they lose to the other player
     // Where might you catch this exception????
+    public class SoreLoserException : Exception
+    {
+        public SoreLoserException()
+            : base(String.Format("Oops! Something went wrong!")) { }
+    }
+
     public class SoreLoserPlayer : Player
     {
         public override void Play(Player other)
@@ -24,15 +30,20 @@ namespace ShootingDice
                     Console.WriteLine($"{Name} Wins!");
                 }
                 
-                else if (myRoll == otherRoll)
+                else if (myRoll < otherRoll)
+                {
+                    throw new SoreLoserException();
+                }
+
+                else
                 {
                     Console.WriteLine($"It's a tie!");
                 }
             }
 
-            catch 
+            catch (SoreLoserException ex)
             {            
-                Console.WriteLine($"Oops! Something went wrong!");
+                Console.WriteLine(ex);
             }
             
         }
