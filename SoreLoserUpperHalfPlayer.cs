@@ -6,6 +6,11 @@ namespace ShootingDice
 
     // A Player who always rolls in the upper half of their possible role and
     //  who throws an exception when they lose to the other player
+     public class HighSoreLoserException : Exception
+    {
+        public HighSoreLoserException()
+            : base(String.Format("Oops! Something went wrong!")) { }
+    }
     public class SoreLoserUpperHalfPlayer : Player
     {
         public override int Roll()
@@ -22,22 +27,27 @@ namespace ShootingDice
             Console.WriteLine($"{Name} rolls a {myRoll}");
             Console.WriteLine($"{other.Name} rolls a {otherRoll}");
             
-            try 
+           try 
             {
                 if (myRoll > otherRoll)
                 {
                     Console.WriteLine($"{Name} Wins!");
                 }
                 
-                else if (myRoll == otherRoll)
+                else if (myRoll < otherRoll)
+                {
+                    throw new HighSoreLoserException();
+                }
+
+                else
                 {
                     Console.WriteLine($"It's a tie!");
                 }
             }
 
-            catch 
+            catch (HighSoreLoserException ex)
             {            
-                Console.WriteLine($"Oops! Something went wrong!");
+                Console.WriteLine(ex);
             }
             
         }
